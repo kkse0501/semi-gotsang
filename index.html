@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>모바일 캘린더</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="phone">
+    <!-- 상단 바 -->
+    <div class="top-bar">
+      <span>9:41</span>
+      <div class="icons">
+        <div class="circle"></div>
+        <div class="circle small"></div>
+      </div>
+    </div>
+
+    <!-- 캘린더 화면 -->
+    <div class="screen active" id="calendar">
+      <div class="calendar-header">
+        <h2 id="month-year">2025년 9월</h2>
+
+        <!-- 🔹 오른쪽 영역: 화살표 + 아이콘 -->
+        <div class="header-right">
+            <div class="nav-arrows">
+                <span id="prev-month">◀</span>
+                <span id="next-month">▶</span>
+            </div>
+            <div class="header-icons">
+                <span class="icon">🔍</span>
+                <span class="icon">🔔</span>
+            </div>
+        </div>
+    </div>
+
+
+
+      <div class="calendar-grid">
+        <div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div>
+        <div class="empty"></div><div class="empty"></div><div class="empty"></div><div class="empty"></div><div class="empty"></div>
+        <div class="day">1</div><div class="day">2</div><div class="day">3</div><div class="day">4</div><div class="day">5</div><div class="day">6</div><div class="day">7</div>
+        <div class="day">8</div><div class="day">9</div><div class="day">10</div>
+        <div class="day today">11<br><span class="event red">퍼즐캠프로 시작하는</span></div>
+        <div class="day">12</div><div class="day">13</div>
+        <div class="day">14</div><div class="day">15</div><div class="day">16</div>
+        <div class="day">17</div><div class="day">18</div>
+        <div class="day highlight">19<br><span class="event yellow">‘유현아 시인 초청 강연’ 신청</span></div>
+        <div class="day">20</div>
+        <div class="day long-event">21<br><span class="event yellow">‘유현아 시인 초청 강연’ 신청 기간</span></div>
+        <div class="day">22</div><div class="day">23</div><div class="day">24</div><div class="day">25</div>
+        <div class="day">26</div><div class="day">27</div><div class="day">28</div><div class="day">29</div><div class="day">30</div>
+      </div>
+    </div>
+
+    <!-- 하단 네비게이션 -->
+    <div class="bottom-nav">
+      <button class="active">🏠<br>홈화면</button>
+      <button>🗓️<br>나의 캘린더</button>
+      <button>👥<br>커뮤니티</button>
+      <button>⚙️<br>설정</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+
+      <!-- 일정 입력 팝업 -->
+  <div id="schedule-modal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn">✖</button>
+      <h3>일정 제목</h3>
+      <input type="text" id="schedule-input" placeholder="이날의 일정을 입력하세요" />
+      <button id="save-schedule">✅ 저장</button>
+    </div>
+  </div>
+
+  
+</body>
+</html>

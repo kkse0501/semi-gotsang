@@ -1,0 +1,78 @@
+/* 달력 그리드 컨테이너 */
+.calendar-grid-container {
+    padding: 0 10px;
+}
+
+.days-of-week, .date-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+}
+
+/* 요일 스타일 */
+.days-of-week span {
+    font-weight: 600;
+    padding: 10px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+/* 날짜 그리드 스타일 */
+.date-grid {
+    padding-top: 5px;
+}
+
+.date {
+    padding: 12px 0;
+    font-size: 18px;
+    font-weight: 400;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    position: relative; 
+}
+
+.other-month {
+    color: #b0b0b0; 
+}
+
+/* 이벤트 표시 스타일 */
+.date.today-highlight {
+    color: #fff; 
+    background-color: #f77f7f; 
+    border-radius: 50%;
+    width: 30px; 
+    height: 30px;
+    line-height: 30px; 
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.event-label {
+    position: absolute;
+    bottom: -15px; 
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fce4ec; 
+    color: #c2185b; 
+    font-size: 10px;
+    padding: 2px 5px;
+    border-radius: 3px;
+    white-space: nowrap; 
+}
+
+/* 일정 점 표시 스타일 */
+.event-dot {
+    position: absolute;
+    bottom: 2px;
+    width: 5px;
+    height: 5px;
+    background-color: #4CAF50; 
+    border-radius: 50%;
+}

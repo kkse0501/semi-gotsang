@@ -1,128 +1,142 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>모바일 캘린더</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEMI-GOTSANG</title>
+    
+    <link rel="stylesheet" href="styles/base.css"> 
+    
+    <link rel="stylesheet" href="header/header.css">
+    <link rel="stylesheet" href="header/month-nav.css">
+    <link rel="stylesheet" href="calendar/calendar.css">
+    <link rel="stylesheet" href="bottom-bar/bottom-bar.css">
 </head>
 <body>
-  <div class="phone">
-    <!-- 상단 바 -->
-    <div class="top-bar">
-      <span>9:41</span>
-      <div class="icons">
-        <div class="circle"></div>
-        <div class="circle small"></div>
-      </div>
+    <div class="web-container"> 
+        <div id="header-container"></div>
+
+        <div id="calendar-container"></div>
+
+        <div id="bottom-bar-container"></div>
     </div>
 
-    <!-- 캘린더 화면 -->
-    <div class="screen active" id="calendar">
-      <div class="calendar-header">
-        <h2 id="month-year">2025년 9월</h2>
-
-        <div class="header-right">
-          <div class="nav-arrows">
-            <span id="prev-month">◀</span>
-            <span id="next-month">▶</span>
-          </div>
-          <div class="header-icons">
-            <span class="icon">🔍</span>
-            <span class="icon">🔔</span>
-          </div>
+    <div id="event-input-sheet" class="bottom-sheet">
+        <div class="sheet-header">
+            <span class="edit-icon" id="sheet-edit-icon">📝</span>
+            <span class="date-display" id="sheet-date-display">새 일정 추가</span>
+            <span class="close-icon" onclick="toggleEventSheet(false)">❌</span>
         </div>
-      </div>
+        <div class="sheet-content">
+            <div id="event-input-form">
+                <div class="input-group">
+                    <label for="event-date">날짜 선택:</label>
+                    <input type="date" id="event-date" value="2025-09-27">
+                </div>
 
-      <!-- 달력 -->
-      <div class="calendar-grid">
-        <div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div>
-        <div class="empty"></div><div class="empty"></div><div class="empty"></div><div class="empty"></div><div class="empty"></div>
+                <div class="input-group">
+                    <label for="event-title">일정 내용:</label>
+                    <input type="text" id="event-title" placeholder="일정 제목을 입력하세요">
+                </div>
+                
+                <button id="save-event-btn" onclick="saveEvent()">일정 저장</button>
+            </div>
+            
+            <div id="event-details-list">
+                <div class="event-item-placeholder">
+                    <div class="event-icon">📝</div> 
+                    <div class="event-details">
+                        <span class="event-title">세미콜론 스터디 모임</span>
+                        <span class="event-schedule">매주 토요일</span>
+                        <span class="event-category">개인</span>
+                    </div>
+                    <span class="arrow-icon">&gt;</span>
+                </div>
+            </div>
+
+            <p id="no-events-message" style="text-align: center; color: #888; display: none;">선택한 날짜에 일정이 없습니다.</p>
+        </div>
+    </div>
+
+    <script src="header/header.js"></script>
+    <script src="calendar/calendar.js"></script>
+    <script src="calendar/schedule.js"></script> 
+    <script src="bottom-bar/bottom-bar.js"></script>
+    <script src="bottom-bar/my-calendar/my-calendar.js"></script> 
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => { 
+            const loadComponent = async (path, containerId) => {
+                try {
+                    const response = await fetch(path);
+                    const html = await response.text();
+                    
+                    if (containerId === 'header-container' && path === 'header/month-nav.html') {
+                        document.getElementById(containerId).insertAdjacentHTML('beforeend', html);
+                    } else {
+                        document.getElementById(containerId).innerHTML = html;
+                    }
+
+                    if (containerId === 'calendar-container') {
+                        if (window.initCalendar) {
+                            window.initCalendar();
+                        }
+                    }
+                } catch (error) {
+                    console.error(`Error loading component from ${path}:`, error);
+                }
+            };
+
+            // 컴포넌트 로드: await을 사용하여 순서를 지키고 HTML 삽입을 기다림
+            await loadComponent('header/header.html', 'header-container');
+            await loadComponent('header/month-nav.html', 'header-container');
+            await loadComponent('calendar/calendar.html', 'calendar-container');
+            await loadComponent('bottom-bar/bottom-bar.html', 'bottom-bar-container');
+            
+            if (window.initTabHandler) {
+                window.initTabHandler();
+            }
+        });
+
+        // 바텀 시트 토글 함수
+        window.toggleEventSheet = (show, mode = 'input') => {
+            const sheet = document.getElementById('event-input-sheet');
+            const form = document.getElementById('event-input-form');
+            const list = document.getElementById('event-details-list');
+            const sheetDateDisplay = document.getElementById('sheet-date-display');
+            
+            if (!sheet) return;
+            
+            sheet.classList.toggle('visible', show);
+
+            if (show) {
+                form.style.display = (mode === 'input') ? 'block' : 'none';
+                list.style.display = (mode === 'details') ? 'block' : 'none';
+                
+                if (mode === 'input') {
+                    sheetDateDisplay.textContent = '새 일정 추가';
+                    
+                    const displayDate = window.currentDate || new Date(2025, 8, 1);
+                    const year = displayDate.getFullYear();
+                    const month = displayDate.getMonth() + 1;
+                    const day = displayDate.getDate();
+                    const today = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    document.getElementById('event-date').value = today;
+                    document.getElementById('event-title').value = ''; 
+                }
+            }
+        };
         
-        <div class="day" data-date="2025-09-01">1</div>
-        <div class="day" data-date="2025-09-02">2</div>
-        <div class="day" data-date="2025-09-03">3</div>
-        <div class="day" data-date="2025-09-04">4</div>
-        <div class="day" data-date="2025-09-05">5</div>
-        <div class="day" data-date="2025-09-06">6</div>
-        <div class="day" data-date="2025-09-07">7</div>
-        <div class="day" data-date="2025-09-08">8</div>
-        <div class="day" data-date="2025-09-09">9</div>
-        <div class="day" data-date="2025-09-10">10</div>
+        // 일정 저장 버튼 클릭 시 호출
+        window.saveEvent = () => {
+            const dateInput = document.getElementById('event-date').value;
+            const titleInput = document.getElementById('event-title').value;
 
-        <div class="day today" data-date="2025-09-11">
-          11<br><span class="event red">퍼즐캠프로 시작하는</span>
-        </div>
-
-        <div class="day" data-date="2025-09-12">12</div>
-        <div class="day" data-date="2025-09-13">13</div>
-        <div class="day" data-date="2025-09-14">14</div>
-        <div class="day" data-date="2025-09-15">15</div>
-        <div class="day" data-date="2025-09-16">16</div>
-        <div class="day" data-date="2025-09-17">17</div>
-        <div class="day" data-date="2025-09-18">18</div>
-
-        <div class="day highlight" data-date="2025-09-19">
-          19<br><span class="event yellow">‘유현아 시인 초청 강연’ 신청</span>
-        </div>
-
-        <div class="day" data-date="2025-09-20">20</div>
-
-        <div class="day long-event" data-date="2025-09-21">
-          21<br><span class="event yellow">‘유현아 시인 초청 강연’ 신청 기간</span>
-        </div>
-
-        <div class="day" data-date="2025-09-22">22</div>
-        <div class="day" data-date="2025-09-23">23</div>
-        <div class="day" data-date="2025-09-24">24</div>
-        <div class="day" data-date="2025-09-25">25</div>
-        <div class="day" data-date="2025-09-26">26</div>
-        <div class="day" data-date="2025-09-27">27</div>
-        <div class="day" data-date="2025-09-28">28</div>
-        <div class="day" data-date="2025-09-29">29</div>
-        <div class="day" data-date="2025-09-30">30</div>
-      </div>
-    </div>
-
-    <!-- 하단 네비게이션 -->
-    <div class="bottom-nav">
-      <button class="active">🏠<br>홈화면</button>
-      <button>🗓️<br>나의 캘린더</button>
-      <button>👥<br>커뮤니티</button>
-      <button>⚙️<br>설정</button>
-    </div>
-  </div>
-
-  <!-- 날짜 선택 팝업 -->
-  <div id="dayPopup" class="popup hidden">
-    <p>이 날짜에 무엇을 추가할까요?</p>
-    <div class="popup-buttons">
-      <button id="addSchedule" class="popup-btn">＋ 일정</button>
-      <button id="addMemo" class="popup-btn">📝 메모</button>
-    </div>
-    <span id="closePopup" class="close-btn">✖</span>
-  </div>
-
-  <!-- 일정 입력 모달 -->
-  <div id="scheduleModal" class="modal hidden">
-    <div class="modal-content">
-      <span class="close-btn" id="closeSchedule">✖</span>
-      <h2>일정 제목</h2>
-      <input id="scheduleInput" type="text" placeholder="이 날의 일정을 입력하세요" />
-      <button class="save-btn">✔ 저장</button>
-    </div>
-  </div>
-
-  <!-- 메모 입력 모달 -->
-  <div id="memoModal" class="modal hidden">
-    <div class="modal-content">
-      <span class="close-btn" id="closeMemo">✖</span>
-      <h2>메모 제목</h2>
-      <input id="memoInput" type="text" placeholder="메모를 입력하세요" />
-      <button class="save-btn">✔ 저장</button>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-</html>
+            if (dateInput && titleInput && window.addEventToCalendar) {
+                window.addEventToCalendar(dateInput, titleInput); 
+                window.toggleEventSheet(false);
+            } else {
+                alert('날짜와 내용을 모두 입력해주세요.');
+            }
+        };
+    </script>

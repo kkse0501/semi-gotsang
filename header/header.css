@@ -1,0 +1,40 @@
+.status-bar {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 5px 15px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.time {
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.header-icons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    padding-top: 15px;
+}
+
+.icon {
+    font-size: 24px;
+    color: #4CAF50;
+    cursor: pointer;
+    margin-left: 15px;
+}
+
+.list-icon {
+    font-size: 30px;
+}
+
+.filter-icon {
+    transform: rotate(90deg);
+}
+
+.right-icons {
+    display: flex;
+}

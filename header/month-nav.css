@@ -1,0 +1,51 @@
+/* 월 이동 기능 CSS (month-nav.html의 스타일) */
+.month-navigation {
+    display: flex;
+    align-items: baseline; 
+    justify-content: flex-start;
+    padding: 0 15px 20px 15px;
+}
+
+.month-year-display {
+    display: flex;
+    align-items: baseline;
+    margin: 0 5px; 
+}
+
+.month-text {
+    font-size: 32px;
+    font-weight: 800;
+    margin-right: 10px;
+    color: #333;
+}
+
+.year-text {
+    font-size: 20px;
+    font-weight: 500;
+    color: #888;
+}
+
+/* 네비게이션 버튼 스타일 */
+.nav-button {
+    background: none;
+    border: none;
+    font-size: 32px;
+    color: #999;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.1s;
+}
+
+.nav-button:hover {
+    color: #333;
+}
+
+.prev-month-btn {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+.next-month-btn {
+    margin-left: 5px;
+    margin-bottom: 5px;
+}

@@ -23,14 +23,16 @@
 }
 
 .date {
-    padding: 12px 0;
+    /* 높이를 키워 날짜와 제목이 들어갈 공간 확보 */
+    padding: 8px 0; 
     font-size: 18px;
     font-weight: 400;
     color: #333;
     display: flex;
+    flex-direction: column; /* 날짜와 제목을 수직으로 배치 */
     justify-content: center;
     align-items: center;
-    height: 30px;
+    height: 50px; /* 전체 셀 높이 조정 */
     position: relative; 
 }
 
@@ -55,6 +57,7 @@
 }
 
 .event-label {
+    /* 기존 핑크색 라벨 스타일은 유지 (더미 데이터용) */
     position: absolute;
     bottom: -15px; 
     left: 50%;
@@ -70,9 +73,22 @@
 /* 일정 점 표시 스타일 */
 .event-dot {
     position: absolute;
-    bottom: 2px;
+    top: 5px; /* 날짜 숫자 위쪽에 배치 */
     width: 5px;
     height: 5px;
     background-color: #4CAF50; 
     border-radius: 50%;
+}
+
+/* ⭐⭐ 새로운 일정 제목 라벨 스타일 ⭐⭐ */
+.event-title-label {
+    font-size: 10px;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* 글자가 길면 ...으로 표시 */
+    max-width: 90%;
+    text-align: center;
+    margin-top: 5px; /* 날짜 숫자 아래에 간격 */
+    line-height: 1.2;
 }

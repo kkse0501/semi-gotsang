@@ -51,31 +51,21 @@ function renderCalendar(date) {
         if (events && events.length > 0) {
             const primaryEvent = events[0]; 
 
-            if (primaryEvent.type === 'highlight') {
-                dayEl.classList.add('today-highlight');
-            }
-            if (primaryEvent.type === 'label') {
-                const label = document.createElement('div');
-                label.textContent = primaryEvent.title;
-                label.classList.add('event-label');
-                dayEl.appendChild(label);
-            }
-            if (primaryEvent.type === 'dot') {
-                const dot = document.createElement('div');
-                dot.classList.add('event-dot'); 
-                
-                // 이벤트 색상 적용
-                const colorMap = {
-                    red: '#f44336', 
-                    green: '#4CAF50', 
-                    blue: '#2196F3',
-                    yellow: '#FFC107',
-                    default: '#4CAF50'
-                };
-                dot.style.backgroundColor = colorMap[primaryEvent.categoryColor] || colorMap.default;
+            // 1. 점(Dot) 표시
+            const dot = document.createElement('div');
+            dot.classList.add('event-dot'); 
+            
+            const colorMap = {
+                red: '#f44336', purple: '#9C27B0', green: '#4CAF50', blue: '#2196F3', yellow: '#FFC107', cyan: '#00BCD4', default: '#4CAF50'
+            };
+            dot.style.backgroundColor = colorMap[primaryEvent.categoryColor] || colorMap.default;
+            dayEl.appendChild(dot);
 
-                dayEl.appendChild(dot);
-            }
+            // 2. ⭐ 일정 제목(Label) 표시 보강 ⭐
+            const titleLabel = document.createElement('div');
+            titleLabel.textContent = primaryEvent.title;
+            titleLabel.classList.add('event-title-label');
+            dayEl.appendChild(titleLabel);
         }
         
         dayEl.dataset.date = dateKey; 
@@ -83,10 +73,7 @@ function renderCalendar(date) {
     }
 
     // 다음 달 날짜 채우기
-    const totalCells = dateGrid.children.length;
-    const cellsToFill = 42 - totalCells; 
-
-    for (let i = 1; i <= cellsToFill; i++) {
+    for (let i = 1; i <= (42 - dateGrid.children.length); i++) {
         const dayEl = document.createElement('span');
         dayEl.textContent = i;
         dayEl.classList.add('date', 'other-month');

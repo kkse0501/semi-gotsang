@@ -59,13 +59,18 @@ function showEventDetails(dateKey) {
         listContainer.style.display = 'block';
 
         events.forEach(event => {
+            // ⭐ 상세 목록에 카테고리 색상과 아이콘 반영 ⭐
+            const categoryColorCode = {
+                red: '#f44336', green: '#4CAF50', blue: '#2196F3', yellow: '#FFC107', default: '#888'
+            }[event.categoryColor] || '#888';
+
             const itemHtml = `
                 <div class="event-item-placeholder">
-                    <div class="event-icon">${event.type === 'highlight' ? '⭐' : '📝'}</div> 
+                    <div class="event-icon" style="background-color: ${categoryColorCode}; color: white;">${event.icon || '📝'}</div> 
                     <div class="event-details">
                         <span class="event-title">${event.name || event.title}</span>
-                        <span class="event-schedule">${event.type === 'highlight' ? '하루 종일' : '시간 지정'}</span>
-                        <span class="event-category">개인</span>
+                        <span class="event-schedule">${event.memo || '메모 없음'}</span>
+                        <span class="event-category">${event.category}</span>
                     </div>
                     <span class="arrow-icon">&gt;</span>
                 </div>

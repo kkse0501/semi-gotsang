@@ -1,0 +1,153 @@
+/* bottom-bar/my-calendar/my-calendar.css */
+
+/* 바텀 시트 (Modal) 스타일 */
+.bottom-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 100%); 
+    width: 100%;
+    max-width: 1200px;
+    background: #fff;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-out;
+    z-index: 1000;
+    min-height: 300px;
+}
+
+.bottom-sheet.visible {
+    transform: translate(-50%, -0px); 
+}
+
+.sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.sheet-header .date-display {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.sheet-header .edit-icon, 
+.sheet-header .close-icon {
+    font-size: 20px;
+    cursor: pointer;
+    color: #4CAF50;
+}
+
+.sheet-header .close-icon {
+    color: #888;
+}
+
+.sheet-content {
+    padding: 20px;
+}
+
+/* 입력 필드 그룹 스타일 */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.input-group input[type="date"],
+.input-group input[type="text"],
+.input-group textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    resize: vertical;
+}
+
+.input-group.title-group input {
+    font-weight: bold;
+}
+
+/* 인덱스/아이콘 선택 컨테이너 스타일 */
+.selection-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 5px 0;
+}
+
+/* 인덱스 태그 스타일 */
+.category-tag {
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s;
+    border: 2px solid transparent; 
+    color: white; 
+}
+
+/* 카테고리 색상 정의 */
+.category-tag[data-color="red"] { background-color: #f44336; }
+.category-tag[data-color="green"] { background-color: #4CAF50; }
+.category-tag[data-color="blue"] { background-color: #2196F3; }
+.category-tag[data-color="yellow"] { background-color: #FFC107; }
+.category-tag[data-color="purple"] { background-color: #9C27B0; }
+.category-tag[data-color="cyan"] { background-color: #00BCD4; }
+
+/* 활성(선택된) 인덱스 태그 스타일 */
+.category-tag.active {
+    border-color: #333; 
+}
+
+/* 아이콘 옵션 스타일 */
+.icon-option {
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.1s;
+    border: 2px solid transparent; 
+}
+
+/* 활성(선택된) 아이콘 스타일 */
+.icon-option.active {
+    background-color: #eee;
+    border-color: #4CAF50;
+}
+
+/* 추가(+) 버튼 스타일 */
+.add-btn {
+    font-size: 24px;
+    font-weight: bold;
+    color: #999;
+    padding: 5px;
+    cursor: pointer;
+}
+
+
+#save-event-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}

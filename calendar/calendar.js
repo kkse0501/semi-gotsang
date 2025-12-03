@@ -2,14 +2,11 @@
 
 // 전역 일정 저장소 (YYYY-M-D : [Events])
 let eventStore = {
-    // 초기 더미 일정
-    '2025-9-11': [{ title: '하이라이트', type: 'highlight', name: '중요 일정' }], 
-    '2025-9-12': [{ title: '피들러프로 시작하는', type: 'label', name: '온라인 세미나' }],
-    '2025-9-27': [{ title: '세미콜론 스터디 모임', type: 'dot', name: '스터디 모임' }] 
-};
+    // 초기 더미 일정 (모두 제거됨)
+}; 
 
 let currentDate = new Date(2025, 8, 1); 
-window.currentDate = currentDate; // index.html에서 접근 가능하도록 전역 노출
+window.currentDate = currentDate;
 
 function renderCalendar(date) {
     const dateGrid = document.getElementById('date-grid');
@@ -47,10 +44,8 @@ function renderCalendar(date) {
         dayEl.textContent = i;
         dayEl.classList.add('date');
         
-        // 날짜 키 생성: YYYY-M-D (월/일은 0 없이)
         const dateKey = `${currentYear}-${currentMonth + 1}-${i}`;
 
-        // 저장된 일정 데이터 읽어와 표시
         const events = eventStore[dateKey];
         
         if (events && events.length > 0) {
@@ -68,6 +63,17 @@ function renderCalendar(date) {
             if (primaryEvent.type === 'dot') {
                 const dot = document.createElement('div');
                 dot.classList.add('event-dot'); 
+                
+                // 이벤트 색상 적용
+                const colorMap = {
+                    red: '#f44336', 
+                    green: '#4CAF50', 
+                    blue: '#2196F3',
+                    yellow: '#FFC107',
+                    default: '#4CAF50'
+                };
+                dot.style.backgroundColor = colorMap[primaryEvent.categoryColor] || colorMap.default;
+
                 dayEl.appendChild(dot);
             }
         }
@@ -109,8 +115,7 @@ function initCalendar() {
     renderCalendar(currentDate);
 }
 
-// 일정 추가 함수 (버그 수정 로직 적용)
-function addEventToCalendar(dateString, title) {
+function addEventToCalendar(dateString, title, memo, category, categoryColor, icon) {
     const dateParts = dateString.split('-');
     const year = parseInt(dateParts[0], 10);
     const month = parseInt(dateParts[1], 10); 
@@ -118,7 +123,7 @@ function addEventToCalendar(dateString, title) {
     
     const dateKey = `${year}-${month}-${day}`;
     
-    const newEvent = { title: title, type: 'dot', name: title }; 
+    const newEvent = { title: title, type: 'dot', name: title, memo: memo, category: category, categoryColor: categoryColor, icon: icon }; 
 
     if (!eventStore[dateKey]) {
         eventStore[dateKey] = [];

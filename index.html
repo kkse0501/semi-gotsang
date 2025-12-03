@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SEMI-GOTSANG</title>
+    <title>SEMI-GETSANG</title>
     
     <link rel="stylesheet" href="styles/base.css"> 
     
@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="header/month-nav.css">
     <link rel="stylesheet" href="calendar/calendar.css">
     <link rel="stylesheet" href="bottom-bar/bottom-bar.css">
+    <link rel="stylesheet" href="bottom-bar/my-calendar/my-calendar.css"> 
 </head>
 <body>
     <div class="web-container"> 
@@ -38,8 +39,40 @@
                     <label for="event-title">일정 내용:</label>
                     <input type="text" id="event-title" placeholder="일정 제목을 입력하세요">
                 </div>
+
+                <div class="input-group">
+                    <label for="event-memo">메모 추가:</label>
+                    <textarea id="event-memo" placeholder="여기에 내용을 입력하세요..." rows="3"></textarea>
+                </div>
+
+                <div class="input-group index-group">
+                    <label>인덱스 (색상):</label>
+                    <div class="selection-container" id="category-selection">
+                        <span class="category-tag active" data-color="red" data-category="개인">개인</span>
+                        <span class="category-tag" data-color="purple" data-category="휴가">휴가</span>
+                        <span class="category-tag" data-color="green" data-category="사업단">사업단</span>
+                        <span class="category-tag" data-color="blue" data-category="성장마루">성장마루</span>
+                        <span class="category-tag" data-color="yellow" data-category="알바">알바</span>
+                        <span class="category-tag" data-color="cyan" data-category="병원">병원</span>
+                        <span class="add-btn" onclick="addCustomCategory()">+</span>
+                    </div>
+                </div>
+
+                <div class="input-group icon-group">
+                    <label>아이콘:</label>
+                    <div class="selection-container" id="icon-selection">
+                        <span class="icon-option active" data-icon="📝">📝</span>
+                        <span class="icon-option" data-icon="🧑‍💻">🧑‍💻</span>
+                        <span class="icon-option" data-icon="✏️">✏️</span>
+                        <span class="icon-option" data-icon="❤️">❤️</span>
+                        <span class="icon-option" data-icon="🎹">🎹</span>
+                        <span class="icon-option" data-icon="⚽">⚽</span>
+                        <span class="icon-option" data-icon="🏥">🏥</span>
+                        <span class="add-btn" onclick="alert('새로운 아이콘 추가 기능은 개발 중입니다.')">+</span>
+                    </div>
+                </div>
                 
-                <button id="save-event-btn" onclick="saveEvent()">일정 저장</button>
+                <button id="save-event-btn" onclick="saveEventLogic()">일정 저장</button>
             </div>
             
             <div id="event-details-list">
@@ -62,9 +95,7 @@
     <script src="calendar/calendar.js"></script>
     <script src="calendar/schedule.js"></script> 
     <script src="bottom-bar/bottom-bar.js"></script>
-    <script src="bottom-bar/my-calendar/my-calendar.js"></script> 
-    
-    <script>
+    <script src="bottom-bar/my-calendar/my-calendar.js"></script> <script>
         document.addEventListener('DOMContentLoaded', async () => { 
             const loadComponent = async (path, containerId) => {
                 try {
@@ -87,14 +118,20 @@
                 }
             };
 
-            // 컴포넌트 로드: await을 사용하여 순서를 지키고 HTML 삽입을 기다림
+            // 컴포넌트 로드
             await loadComponent('header/header.html', 'header-container');
             await loadComponent('header/month-nav.html', 'header-container');
             await loadComponent('calendar/calendar.html', 'calendar-container');
             await loadComponent('bottom-bar/bottom-bar.html', 'bottom-bar-container');
             
+            // ⭐ 통합된 로직의 초기화 함수만 호출 ⭐
             if (window.initTabHandler) {
                 window.initTabHandler();
+            }
+            
+            // 일정 입력 핸들러 초기화 함수 호출
+            if (window.initInputHandlers) {
+                window.initInputHandlers();
             }
         });
 
@@ -127,16 +164,17 @@
             }
         };
         
-        // 일정 저장 버튼 클릭 시 호출
-        window.saveEvent = () => {
-            const dateInput = document.getElementById('event-date').value;
-            const titleInput = document.getElementById('event-title').value;
+        // 커스텀 로직: + 버튼 클릭 시 호출
+        window.addCustomCategory = () => {
+             alert("새로운 인덱스/색상 추가 기능은 개발 중입니다.");
+        };
 
-            if (dateInput && titleInput && window.addEventToCalendar) {
-                window.addEventToCalendar(dateInput, titleInput); 
-                window.toggleEventSheet(false);
+        // 일정 저장 버튼 클릭 시 호출 (my-calendar.js의 전역 함수를 호출)
+        window.saveEvent = () => {
+            if (window.saveEventLogic) {
+                window.saveEventLogic();
             } else {
-                alert('날짜와 내용을 모두 입력해주세요.');
+                 console.error("saveEventLogic is not defined.");
             }
         };
     </script>

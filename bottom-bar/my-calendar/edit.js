@@ -1,39 +1,6 @@
-// bottom-bar/my-calendar/my-calendar.js - 탭 및 일정 편집 로직 통합
+// bottom-bar/my-calendar/edit.js - 일정 입력 및 저장 로직
 
-// 1. 탭 핸들링 로직 (기존 my-calendar.js의 내용)
-function initTabHandler() {
-    const tabs = document.querySelectorAll('#bottom-bar-container .tab');
-    const calendarTab = document.querySelector('#bottom-bar-container .tab:nth-child(2)'); 
-
-    const handleTabClick = (event) => {
-        const clickedTab = event.currentTarget;
-        
-        tabs.forEach(tab => tab.classList.remove('active-tab'));
-        clickedTab.classList.add('active-tab');
-
-        if (window.toggleEventSheet) {
-            if (clickedTab === calendarTab) {
-                // 'my 캘린더' 탭 클릭 시 일정 입력 시트 열기
-                window.toggleEventSheet(true, 'input'); 
-            } else {
-                // 다른 탭 클릭 시 시트 닫기
-                window.toggleEventSheet(false);
-            }
-        }
-    };
-
-    if (tabs.length > 0) {
-        tabs.forEach(tab => {
-            tab.removeEventListener('click', handleTabClick);
-            tab.addEventListener('click', handleTabClick);
-        });
-    } else {
-        console.error("Tab elements not found in bottom-bar-container.");
-    }
-}
-
-
-// 2. 인덱스/아이콘 선택 상태 관리 로직 (이전 edit.js의 내용)
+// 인덱스 및 아이콘 선택 상태 관리
 function initSelectionHandlers() {
     const categorySelection = document.getElementById('category-selection');
     const iconSelection = document.getElementById('icon-selection');
@@ -44,9 +11,6 @@ function initSelectionHandlers() {
             if (e.target.classList.contains('category-tag')) {
                 categorySelection.querySelectorAll('.category-tag').forEach(tag => tag.classList.remove('active'));
                 e.target.classList.add('active');
-            } else if (e.target.classList.contains('add-btn')) {
-                // + 버튼 클릭 시
-                window.addCustomCategory(); 
             }
         });
     }
@@ -56,22 +20,17 @@ function initSelectionHandlers() {
             if (e.target.classList.contains('icon-option')) {
                 iconSelection.querySelectorAll('.icon-option').forEach(icon => icon.classList.remove('active'));
                 e.target.classList.add('active');
-            } else if (e.target.classList.contains('add-btn')) {
-                // + 버튼 클릭 시
-                alert("새로운 아이콘 추가 기능은 개발 중입니다."); 
             }
         });
     }
 
     // 일정 저장 버튼 클릭 시 로직
     if (saveEventBtn) {
-        // 기존 리스너를 제거하고 새로운 로직을 추가
         saveEventBtn.removeEventListener('click', saveEventLogic); 
         saveEventBtn.addEventListener('click', saveEventLogic); 
     }
 }
 
-// 3. 일정 저장 로직 (이전 edit.js의 내용)
 function saveEventLogic() {
     const dateInput = document.getElementById('event-date').value;
     const titleInput = document.getElementById('event-title').value;
@@ -98,9 +57,5 @@ function saveEventLogic() {
     }
 }
 
-
-// 4. 통합 초기화 및 전역 노출
-// index.html에서 이 함수들을 호출할 수 있도록 전역 객체(window)에 노출합니다.
-window.initTabHandler = initTabHandler; 
-window.initInputHandlers = initSelectionHandlers; 
-window.saveEventLogic = saveEventLogic;
+window.initInputHandlers = initSelectionHandlers; // index.html이 호출할 수 있도록 전역 노출
+window.saveEventLogic = saveEventLogic; // index.html의 saveEvent가 호출할 수 있도록 전역 노출
